@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ADD_NEW_LESSON, globalEventBus, LESSONS_LIST_AVAILABLE, Observer} from '../event-bus-experiments/event-bus';
 import {Lesson} from '../shared/model/lesson';
 import * as _ from 'lodash';
+import {Observer, store} from '../event-bus-experiments/app-data';
 
 @Component({
   selector: 'lessons-list',
@@ -12,34 +12,26 @@ export class LessonsListComponent implements OnInit, Observer {
 
   lessons: Lesson[] = [];
 
-  notify(data: Lesson[]) {
-    console.log(`lessons-list get data`);
-    this.lessons = data;
-  }
 
   constructor() {
   }
 
   ngOnInit() {
     console.log(`lessons-list register as observer`);
-    globalEventBus.registerObserver(LESSONS_LIST_AVAILABLE, this);
-    globalEventBus.registerObserver(ADD_NEW_LESSON, {
-      notify: lessonText => {
-        this.lessons.push({
-          id: Math.random(),
-          description: lessonText,
-          duration: '--:--'
-        });
-      }
-    });
+    store.subscribe(this);
+  }
+
+  next(data: Lesson[]) {
+    console.log(`lessons-list get data`);
+    this.lessons = data;
   }
 
   toggleLessonViewed(lesson: Lesson) {
-    lesson.completed = !lesson.completed;
+    store.toggleLessonViewed(lesson);
   }
 
-  delete(lesson: Lesson) {
-    _.remove(this.lessons, lesson);
+  deleteLesson(lesson: Lesson) {
+    store.deleteLesson(lesson);
   }
 
 }
