@@ -18,7 +18,7 @@ export class LessonsCounterComponent implements OnInit, Observer<Lesson[]> {
 
   ngOnInit() {
     console.log(`lesson-counter registered as observer`);
-    store.lessonsList$.subscribe(this);
+    store.lessonsList$.subscribe(data => this.lessonsCounter = data.length);
     // globalEventBus.subscribe(LESSONS_LIST_AVAILABLE, this);
     // globalEventBus.subscribe(ADD_NEW_LESSON, {
     //   next: lessonText =>

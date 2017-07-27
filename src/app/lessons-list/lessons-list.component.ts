@@ -15,7 +15,7 @@ export class LessonsListComponent implements OnInit, Observer<Lesson[]> {
 
   constructor() {
     console.log(`lessons-list register as observer`);
-    store.lessonsList$.subscribe(this);
+    store.lessonsList$.subscribe(data => this.lessons = data);
   }
 
   ngOnInit() {
